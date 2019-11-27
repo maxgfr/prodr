@@ -12,7 +12,7 @@
         android:layout_height="38dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text="First Name"
         tools:layout_editor_absoluteX="97dp"
         tools:layout_editor_absoluteY="77dp" />
 
@@ -22,7 +22,7 @@
         android:layout_height="37dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text="Last Name"
         tools:layout_editor_absoluteX="98dp"
         tools:layout_editor_absoluteY="144dp" />
 
@@ -30,7 +30,7 @@
         android:id="@+id/radioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RadioButton"
+        android:text="Artist"
         tools:layout_editor_absoluteX="51dp"
         tools:layout_editor_absoluteY="329dp" />
 
@@ -38,7 +38,7 @@
         android:id="@+id/radioButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RadioButton"
+        android:text="Beatmaker"
         tools:layout_editor_absoluteX="249dp"
         tools:layout_editor_absoluteY="329dp" />
 
@@ -48,7 +48,7 @@
         android:layout_height="38dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text="Description"
         tools:layout_editor_absoluteX="99dp"
         tools:layout_editor_absoluteY="216dp" />
 
@@ -56,7 +56,7 @@
         android:id="@+id/button"
         android:layout_width="160dp"
         android:layout_height="48dp"
-        android:text="Button"
+        android:text="Validate"
         tools:layout_editor_absoluteX="130dp"
         tools:layout_editor_absoluteY="582dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
