@@ -1,8 +1,10 @@
-package com.example.prodr;
+package com.example.prodr.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.prodr.R;
 
 public class InfosActivity extends AppCompatActivity {
 
