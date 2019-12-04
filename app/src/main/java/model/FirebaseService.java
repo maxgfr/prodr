@@ -25,7 +25,7 @@ public class FirebaseService {
         return single_instance;
     }
 
-    public void findUser (String id, final AsyncFirebase myInterface) {
+    public void findUser (String id, final AsyncLogin myInterface) {
         DocumentReference docRef = db.collection("users").document(id);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -33,12 +33,11 @@ public class FirebaseService {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        System.out.println("Reconnection");
                         System.out.println(document.getId() + " => " + document.getData());
-                        myInterface.onSuccess("Login successful");
+                        myInterface.onSuccess("Login successful", LoginType.RECONNECT);
                     } else {
-                        System.out.println("Create account");
-                        myInterface.onSuccess("Login successful");
+
+                        myInterface.onSuccess("Login successful", LoginType.CREATE);
                     }
                 } else {
                     System.out.println("Get failed with "+ task.getException());

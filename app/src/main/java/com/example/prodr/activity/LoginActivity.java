@@ -1,8 +1,9 @@
 package com.example.prodr.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import model.AsyncFirebase;
+import model.AsyncLogin;
 import model.FirebaseService;
+import model.LoginType;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -62,17 +63,22 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("access_token", loginResult.getAccessToken().getToken());
-        editor.commit();
+        editor.apply();
         FirebaseService firebaseService = FirebaseService.getInstance();
-        firebaseService.findUser(loginResult.getAccessToken().getToken(), new AsyncFirebase() {
+        firebaseService.findUser(loginResult.getAccessToken().getToken(), new AsyncLogin() {
                 @Override
-                public void onSuccess(String response) {
-                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                public void onSuccess(String msg, LoginType type) {
+                    if(type == LoginType.CREATE) {
+                        System.out.println("Create account");
+                    } else if (type == LoginType.RECONNECT) {
+                        System.out.println("Reconnection");
+                    }
+                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
-                public void onFailure(String response) {
-                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                public void onFailure(String msg) {
+                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                 }
             });
     }
