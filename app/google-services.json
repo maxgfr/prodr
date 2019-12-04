@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "354507946678",
+    "firebase_url": "https://prodr-project.firebaseio.com",
+    "project_id": "prodr-project",
+    "storage_bucket": "prodr-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354507946678:android:bdc87088afcda0693d8417",
+        "android_client_info": {
+          "package_name": "com.example.prodr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354507946678-58b12dafa3gl24kd8fehnmqh796m7o3n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.prodr",
+            "certificate_hash": "ede04f52461d994c0a878b924d418001abfba8a0"
+          }
+        },
+        {
+          "client_id": "354507946678-1uikjpbd8usifapbppp2k2som0ulprpp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoYQQg_nhaHnb2jmEoGw-vADW_ptg15PA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354507946678-1uikjpbd8usifapbppp2k2som0ulprpp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
