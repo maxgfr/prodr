@@ -102,23 +102,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/profile_layout"
-            android:layout_margin="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="5dp"
             android:background="#EAD0D0"
             android:elevation="4dp"
             android:orientation="vertical"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:paddingRight="5dp"
             android:paddingLeft="5dp"
-            >
+            android:paddingTop="20dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="20dp">
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_marginLeft="25dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="319dp"
                 android:text="Originaire de Lyon et à la recherche de rappeurs pour collaborer"
@@ -126,6 +124,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -134,7 +133,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_marginLeft="25dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="160dp"
                 android:clickable="true"
@@ -143,12 +141,12 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.234" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </RelativeLayout>
