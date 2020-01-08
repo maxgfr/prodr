@@ -1,6 +1,7 @@
 package com.example.prodr.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import model.AsyncCreate;
 import model.AsyncLogin;
 import model.FirebaseService;
 import model.LoginType;
@@ -59,17 +60,28 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void onSuccessConnection (LoginResult loginResult) {
+    private void onSuccessConnection (final LoginResult loginResult) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("access_token", loginResult.getAccessToken().getToken());
         editor.apply();
-        FirebaseService firebaseService = FirebaseService.getInstance();
+        final FirebaseService firebaseService = FirebaseService.getInstance();
         firebaseService.findUser(loginResult.getAccessToken().getToken(), new AsyncLogin() {
                 @Override
                 public void onSuccess(String msg, LoginType type) {
                     if(type == LoginType.CREATE) {
                         System.out.println("Create account");
+                        firebaseService.createUser(loginResult.getAccessToken().getToken(), "users", null, new AsyncCreate() {
+                            @Override
+                            public void onSuccess(String msg) {
+                                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+                                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } else if (type == LoginType.RECONNECT) {
                         System.out.println("Reconnection");
                     }
