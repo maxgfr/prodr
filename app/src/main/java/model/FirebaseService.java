@@ -50,8 +50,8 @@ public class FirebaseService {
     }
 
 
-    public void createUser(String documentId, String collectionName, Map<String, Object> docData, final AsyncCreate myInterface) {
-        DocumentReference docRef = db.collection(collectionName).document(documentId);
+    public void createUser(String documentId, Map<String, Object> docData, final AsyncCreate myInterface) {
+        DocumentReference docRef = db.collection("users").document(documentId);
         docRef.set(docData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

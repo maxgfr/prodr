@@ -19,6 +19,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -71,7 +73,10 @@ public class LoginActivity extends AppCompatActivity {
                 public void onSuccess(String msg, LoginType type) {
                     if(type == LoginType.CREATE) {
                         System.out.println("Create account");
-                        firebaseService.createUser(loginResult.getAccessToken().getToken(), "users", null, new AsyncCreate() {
+                        System.out.println(loginResult);
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("id", loginResult.getAccessToken().getToken());
+                        firebaseService.createUser(loginResult.getAccessToken().getToken(), data, new AsyncCreate() {
                             @Override
                             public void onSuccess(String msg) {
                                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
