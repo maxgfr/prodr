@@ -2,4 +2,9 @@
     <string name="app_name">Prodr</string>
     <string name="facebook_app_id">2220320188032227</string>
     <string name="fb_login_protocol_scheme">fb2220320188032227</string>
+
+    <!--Strings for profile-->
+
+    <string name="title_activity_profile">Profile</string>
+    <string name="action_settings">Settings</string>
 </resources>
