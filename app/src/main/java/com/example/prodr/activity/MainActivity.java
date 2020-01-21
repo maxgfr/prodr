@@ -3,6 +3,7 @@ package com.example.prodr.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.prodr.R;
@@ -13,7 +14,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        boolean inscription_done = pref.getBoolean("inscription_done", false);
+        if(!inscription_done) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, SwipeActivity.class);
+            startActivity(intent);
+        }
     }
 }

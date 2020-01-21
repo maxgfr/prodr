@@ -3,6 +3,7 @@ package com.example.prodr.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import model.AsyncCreate;
 import model.AsyncFbApi;
+import model.AsyncGet;
 import model.AsyncLogin;
 import model.FacebookApi;
 import model.FirebaseService;
@@ -80,6 +81,10 @@ public class LoginActivity extends AppCompatActivity {
                 final String id = resp.getJSONObject().getString("id");
                 final String name = resp.getJSONObject().getString("name");
                 final String email = resp.getJSONObject().getString("email");
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("id", id);
+                editor.apply();
                 final FirebaseService firebaseService = FirebaseService.getInstance();
                 firebaseService.findUser(id, new AsyncLogin() {
                     @Override
@@ -104,9 +109,30 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });
                         } else if (type == LoginType.RECONNECT) {
-                            Intent intent = new Intent(getApplicationContext(), InfosActivity.class);
-                            startActivity(intent);
                             System.out.println("Reconnection");
+                            firebaseService.getData(id, "users", new AsyncGet() {
+                                @Override
+                                public void onSuccess(String id, Map<String, Object> object) {
+                                    System.out.println("Account created");
+                                    String firstname = object.get("firstname").toString();
+                                    String lastname = object.get("lastname").toString();
+                                    String description = object.get("description").toString();
+                                    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+                                    SharedPreferences.Editor editor = pref.edit();
+                                    editor.putBoolean("inscription_done", true);
+                                    editor.putString("firstname", firstname);
+                                    editor.putString("lastname", lastname);
+                                    editor.putString("description", description);
+                                    editor.apply();
+                                    Intent intent = new Intent(getApplicationContext(), SwipeActivity.class);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFailure(String msg) {
+                                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                     }
