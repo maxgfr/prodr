@@ -2,6 +2,7 @@ package com.example.prodr.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -100,10 +101,12 @@ public class SwipeActivity extends Activity {
     }
 
     public void onProfile(View view) {
-
+        Intent intent = new Intent(this, ProfilActivity.class);
+        startActivity(intent);
     }
 
     public void onMatch(View view) {
-
+        Intent intent = new Intent(this, MatchActivity.class);
+        startActivity(intent);
     }
 }
