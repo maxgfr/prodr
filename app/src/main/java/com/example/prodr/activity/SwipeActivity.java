@@ -64,11 +64,8 @@ public class SwipeActivity extends Activity {
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
-                // Ask for more data here
-                al.add("XML ".concat(String.valueOf(i)));
-                arrayAdapter.notifyDataSetChanged();
+                //arrayAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
-                i++;
             }
 
             @Override
@@ -94,11 +91,19 @@ public class SwipeActivity extends Activity {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
 
-    public void left(View view) {
+    public void onLeft(View view) {
         flingContainer.getTopCardListener().selectLeft();
     }
 
-    public void right(View view) {
+    public void onRight(View view) {
         flingContainer.getTopCardListener().selectRight();
+    }
+
+    public void onProfile(View view) {
+
+    }
+
+    public void onMatch(View view) {
+
     }
 }
