@@ -1,4 +1,4 @@
-package com.example.prodr;
+package com.maxgfr.prodr;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.prodr", appContext.getPackageName());
+        assertEquals("com.maxgfr.prodr", appContext.getPackageName());
     }
 }

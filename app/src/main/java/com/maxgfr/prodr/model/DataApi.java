@@ -1,4 +1,4 @@
-package model;
+package com.maxgfr.prodr.model;
 
 import android.Manifest;
 import android.app.Activity;

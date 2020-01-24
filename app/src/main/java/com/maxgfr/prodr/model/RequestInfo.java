@@ -1,4 +1,4 @@
-package model;
+package com.maxgfr.prodr.model;
 
 import java.util.ArrayList;
 import java.util.List;

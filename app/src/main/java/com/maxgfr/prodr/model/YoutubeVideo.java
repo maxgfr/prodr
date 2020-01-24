@@ -1,4 +1,4 @@
-package model;
+package com.maxgfr.prodr.model;
 
 public class YoutubeVideo {
     private String videoId;

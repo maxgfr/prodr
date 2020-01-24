@@ -1,20 +1,20 @@
-package com.example.prodr.activity;
+package com.maxgfr.prodr.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import model.AsyncCreate;
-import model.AsyncFbApi;
-import model.AsyncGet;
-import model.AsyncLogin;
-import model.FacebookApi;
-import model.FirebaseService;
-import model.LoginType;
+import com.maxgfr.prodr.model.AsyncCreate;
+import com.maxgfr.prodr.model.AsyncFbApi;
+import com.maxgfr.prodr.model.AsyncGet;
+import com.maxgfr.prodr.model.AsyncLogin;
+import com.maxgfr.prodr.model.FacebookApi;
+import com.maxgfr.prodr.model.FirebaseService;
+import com.maxgfr.prodr.model.LoginType;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.prodr.R;
+import com.maxgfr.prodr.R;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;

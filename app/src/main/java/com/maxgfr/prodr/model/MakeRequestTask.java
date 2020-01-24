@@ -1,4 +1,4 @@
-package model;
+package com.maxgfr.prodr.model;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;

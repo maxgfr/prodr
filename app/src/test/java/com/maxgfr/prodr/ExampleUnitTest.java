@@ -1,4 +1,4 @@
-package com.example.prodr;
+package com.maxgfr.prodr;
 
 import org.junit.Test;
 

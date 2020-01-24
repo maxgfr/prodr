@@ -1,11 +1,10 @@
-package model;
+package com.maxgfr.prodr.model;
 
 import android.os.Bundle;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;

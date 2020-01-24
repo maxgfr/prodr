@@ -1,10 +1,10 @@
-package com.example.prodr.activity;
+package com.maxgfr.prodr.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.prodr.R;
+import com.maxgfr.prodr.R;
 
 public class MatchActivity extends AppCompatActivity {
 

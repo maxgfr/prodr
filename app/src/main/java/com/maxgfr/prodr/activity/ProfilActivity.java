@@ -1,7 +1,7 @@
-package com.example.prodr.activity;
+package com.maxgfr.prodr.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import model.DataApi;
+import com.maxgfr.prodr.model.DataApi;
 
 import android.accounts.AccountManager;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.prodr.R;
+import com.maxgfr.prodr.R;
 
 public class ProfilActivity extends AppCompatActivity {
 

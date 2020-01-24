@@ -1,11 +1,9 @@
-package com.example.prodr.activity;
+package com.maxgfr.prodr.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import model.AsyncCreate;
-import model.AsyncLogin;
-import model.AsyncModify;
-import model.FirebaseService;
-import model.LoginType;
+
+import com.maxgfr.prodr.model.AsyncModify;
+import com.maxgfr.prodr.model.FirebaseService;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -17,7 +15,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.example.prodr.R;
+import com.maxgfr.prodr.R;
 
 import java.util.HashMap;
 import java.util.Map;

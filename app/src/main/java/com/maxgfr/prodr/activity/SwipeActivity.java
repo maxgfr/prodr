@@ -1,4 +1,4 @@
-package com.example.prodr.activity;
+package com.maxgfr.prodr.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.example.prodr.R;
+import com.maxgfr.prodr.R;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;

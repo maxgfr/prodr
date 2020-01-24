@@ -1,4 +1,4 @@
-package model;
+package com.maxgfr.prodr.model;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
