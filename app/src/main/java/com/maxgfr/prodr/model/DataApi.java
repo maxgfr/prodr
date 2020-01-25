@@ -7,17 +7,20 @@ import android.app.ProgressDialog;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTubeScopes;
 
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
-
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class DataApi implements EasyPermissions.PermissionCallbacks {
 
@@ -31,7 +34,7 @@ public class DataApi implements EasyPermissions.PermissionCallbacks {
 
     private static final String[] SCOPES = {YouTubeScopes.YOUTUBE_READONLY};
 
-    public DataApi(Activity activity) {
+    public DataApi(Activity activity) throws IOException, GoogleAuthException {
         // Initialize credentials and service object.
         this.activity = activity;
         mProgress = new ProgressDialog(this.activity);
@@ -39,7 +42,7 @@ public class DataApi implements EasyPermissions.PermissionCallbacks {
                 .setBackOff(new ExponentialBackOff());
     }
 
-    public void setNameAccount(String name) {
+    public void setNameAccount(String name) throws IOException, GoogleAuthException {
         this.mCredential.setSelectedAccountName(name);
     }
 
@@ -51,15 +54,16 @@ public class DataApi implements EasyPermissions.PermissionCallbacks {
      * of the preconditions are not satisfied, the app will prompt the user as
      * appropriate.
      */
-    public void getResultsFromApi() {
+    public void getResultsFromApi() throws IOException, GoogleAuthException {
         if (!isGooglePlayServicesAvailable()) {
             acquireGooglePlayServices();
-        } else if (mCredential.getSelectedAccountName() == null) {
+        }
+        else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (!isDeviceOnline()) {
             sendError("No network connection available.");
         } else {
-            new MakeRequestTask(mCredential,mProgress).execute();
+            new MakeRequestTask(mCredential,mProgress, activity).execute();
         }
     }
 
@@ -74,7 +78,7 @@ public class DataApi implements EasyPermissions.PermissionCallbacks {
      * is granted.
      */
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
-    private void chooseAccount() {
+    private void chooseAccount() throws IOException, GoogleAuthException {
         if (EasyPermissions.hasPermissions(activity, Manifest.permission.GET_ACCOUNTS)) {
             String accountName = activity.getPreferences(Activity.MODE_PRIVATE).getString("accountName", null);
             if (accountName != null) {
@@ -102,7 +106,7 @@ public class DataApi implements EasyPermissions.PermissionCallbacks {
      *                     which is either PERMISSION_GRANTED or PERMISSION_DENIED. Never null.
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
