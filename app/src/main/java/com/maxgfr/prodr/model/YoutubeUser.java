@@ -1,27 +1,30 @@
 package com.maxgfr.prodr.model;
 
+import android.content.SharedPreferences;
+import android.widget.Toast;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class YoutubeUser {
 
     private String accountMail;
     private String possibleUserName;
-    private List<String> listId;
-    private List<String> listTitle;
+    private String thumbnailUrl;
     private List<String> listChannelIdUpload;
     private List<YoutubeVideo> listUpload;
-    private List<BigInteger> listViewCount;
-    private Integer nbSubscriber;
+    private String nbSubscriber;
 
     public YoutubeUser() {
         accountMail="";
         possibleUserName="";
-        listId = new ArrayList<>();
-        listTitle = new ArrayList<>();
+        nbSubscriber="";
         listChannelIdUpload = new ArrayList<>();
-        listViewCount = new ArrayList<>();
         listUpload = new ArrayList<>();
     }
 
@@ -29,24 +32,12 @@ public class YoutubeUser {
         return possibleUserName;
     }
 
-    public List<String> getListTitle() {
-        return listTitle;
-    }
-
     public String getAccountMail() {
         return accountMail;
     }
 
-    public List<String> getListId() {
-        return listId;
-    }
-
     public List<String> getListChannelIdUpload() {
         return listChannelIdUpload;
-    }
-
-    public List<BigInteger> getListViewCount() {
-        return listViewCount;
     }
 
     public List<YoutubeVideo> getListUpload() {
@@ -54,11 +45,11 @@ public class YoutubeUser {
         return listUpload;
     }
 
-    public Integer getNbSubscriber() {
+    public String getNbSubscriber() {
         return nbSubscriber;
     }
 
-    public void setNbSubscriber(Integer nbSubscriber) {
+    public void setNbSubscriber(String nbSubscriber) {
         this.nbSubscriber = nbSubscriber;
     }
 
@@ -74,27 +65,13 @@ public class YoutubeUser {
         System.out.println("POSSIBLE USERNAME is : "+this.possibleUserName);
     }
 
-    public void setListId(List<String> listId) {
-        this.listId = listId;
-    }
-
-    public void setListTitle(List<String> listTitle) {
-        this.listTitle = listTitle;
-    }
-
     public void setListChannelIdUpload(List<String> listChannelIdUpload) {
         this.listChannelIdUpload = listChannelIdUpload;
     }
 
-    public void setListViewCount(List<BigInteger> listViewCount) {
-        this.listViewCount = listViewCount;
-    }
 
-    public void addInformation (String id, String title, BigInteger viewCount, String listChannelIdUpload) {
-        this.listId.add(id);
-        this.listTitle.add(title);
+    public void addInformation (BigInteger viewCount, String listChannelIdUpload) {
         this.listChannelIdUpload.add(listChannelIdUpload);
-        this.listViewCount.add(viewCount);
     }
 
     public void addVideoContent(List<YoutubeVideo> videoId) {
@@ -107,16 +84,14 @@ public class YoutubeUser {
         int i = 1;
         for(YoutubeVideo yv : listUpload) {
             str += "VIDEO ID num."+i+" "+yv.getVideoId()+"\n";
+            i++;
         }
         return "YoutubeUser{" +
                 "accountMail='" + accountMail + '\'' +
                 ", possibleUserName='" + possibleUserName + '\'' +
                 ", nbSubscriber='" + nbSubscriber + '\'' +
-                ", listId=" + listId +
-                ", listTitle=" + listTitle +
                 ", listChannelIdUpload=" + listChannelIdUpload +
                 ", listUpload=" + str +
-                ", listViewCount=" + listViewCount +
                 '}';
     }
 
@@ -126,5 +101,35 @@ public class YoutubeUser {
 
     public int getNbVideo() {
         return this.listUpload.size();
+    }
+
+    public void addThumbnail(String url) {
+        this.thumbnailUrl = url;
+    }
+
+    public void saveData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("accountMail", this.accountMail);
+        data.put("possibleUserName", this.possibleUserName);
+        data.put("thumbnailUrl", this.thumbnailUrl);
+        data.put("nbSubscriber", this.nbSubscriber);
+        data.put("listChannelIdUpload", this.listChannelIdUpload);
+        data.put("listUpload", this.listUpload);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        String id = pref.getString("id", "");
+        final FirebaseService firebaseService = FirebaseService.getInstance();
+        firebaseService.modifyData(id, "users", data, new AsyncModify() {
+            @Override
+            public void onSuccess(String msg) {
+                System.out.println("Data added");
+                Toast.makeText(getApplicationContext(), "Data added to database", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                System.out.println(msg);
+            }
+        });
+
     }
 }
