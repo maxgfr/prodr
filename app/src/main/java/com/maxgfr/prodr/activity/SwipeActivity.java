@@ -46,7 +46,6 @@ public class SwipeActivity extends Activity {
                 Set set = Utils.videoToSet(object.get("listUpload"));
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putBoolean("inscription_done", true);
                 editor.putString("firstname", firstname);
                 editor.putString("lastname", lastname);
                 editor.putString("description", description);
