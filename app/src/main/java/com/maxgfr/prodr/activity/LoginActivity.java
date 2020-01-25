@@ -1,6 +1,17 @@
 package com.maxgfr.prodr.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.maxgfr.prodr.R;
 import com.maxgfr.prodr.model.AsyncCreate;
 import com.maxgfr.prodr.model.AsyncFbApi;
 import com.maxgfr.prodr.model.AsyncGet;
@@ -9,24 +20,13 @@ import com.maxgfr.prodr.model.FacebookApi;
 import com.maxgfr.prodr.model.FirebaseService;
 import com.maxgfr.prodr.model.LoginType;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.widget.Toast;
-
-import com.maxgfr.prodr.R;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-
 import org.json.JSONException;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -114,18 +114,22 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(String id, Map<String, Object> object) {
                                     System.out.println("Account created");
-                                    String firstname = object.get("firstname").toString();
-                                    String lastname = object.get("lastname").toString();
-                                    String description = object.get("description").toString();
-                                    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-                                    SharedPreferences.Editor editor = pref.edit();
-                                    editor.putBoolean("inscription_done", true);
-                                    editor.putString("firstname", firstname);
-                                    editor.putString("lastname", lastname);
-                                    editor.putString("description", description);
-                                    editor.apply();
-                                    Intent intent = new Intent(getApplicationContext(), SwipeActivity.class);
-                                    startActivity(intent);
+                                    try {
+                                        String firstname = object.get("firstname").toString();
+                                        String lastname = object.get("lastname").toString();
+                                        String description = object.get("description").toString();
+                                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+                                        SharedPreferences.Editor editor = pref.edit();
+                                        editor.putBoolean("inscription_done", true);
+                                        editor.putString("firstname", firstname);
+                                        editor.putString("lastname", lastname);
+                                        editor.putString("description", description);
+                                        editor.apply();
+                                        Intent intent = new Intent(getApplicationContext(), SwipeActivity.class);
+                                        startActivity(intent);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
 
                                 @Override

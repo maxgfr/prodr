@@ -37,22 +37,26 @@ public class SwipeActivity extends Activity {
         firebaseService.getData(id, "users", new AsyncGet() {
             @Override
             public void onSuccess(String id, Map<String, Object> object) {
-                System.out.println("On create SwipeActivity");
-                String firstname = object.get("firstname").toString();
-                String lastname = object.get("lastname").toString();
-                String description = object.get("description").toString();
-                String email = object.get("email").toString();
-                String thumbnailUrl = object.get("thumbnailUrl").toString();
-                Set set = Utils.videoToSet(object.get("listUpload"));
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("firstname", firstname);
-                editor.putString("lastname", lastname);
-                editor.putString("description", description);
-                editor.putString("email", email);
-                editor.putString("thumbnailUrl", thumbnailUrl);
-                editor.putStringSet("all_video_id", set);
-                editor.apply();
+                try {
+                    String firstname = object.get("firstname").toString();
+                    String lastname = object.get("lastname").toString();
+                    String description = object.get("description").toString();
+                    String email = object.get("email").toString();
+                    String thumbnailUrl = object.get("thumbnailUrl").toString();
+                    Set set = Utils.videoToSet(object.get("listUpload"));
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("firstname", firstname);
+                    editor.putString("lastname", lastname);
+                    editor.putString("description", description);
+                    editor.putString("email", email);
+                    editor.putString("thumbnailUrl", thumbnailUrl);
+                    editor.putStringSet("all_video_id", set);
+                    editor.apply();
+                    Toast.makeText(getApplicationContext(), "Data loaded", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
