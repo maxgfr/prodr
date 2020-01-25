@@ -6,8 +6,10 @@ import android.widget.Toast;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -117,6 +119,11 @@ public class YoutubeUser {
         data.put("listUpload", this.listUpload);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         String id = pref.getString("id", "");
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("email", this.accountMail);
+        editor.putString("thumbnailUrl", this.thumbnailUrl);
+        editor.putStringSet("all_video_id", videoIdToSetString());
+        editor.apply();
         final FirebaseService firebaseService = FirebaseService.getInstance();
         firebaseService.modifyData(id, "users", data, new AsyncModify() {
             @Override
@@ -131,5 +138,13 @@ public class YoutubeUser {
             }
         });
 
+    }
+
+    private Set<String> videoIdToSetString() {
+        ArrayList<String> lisId = new ArrayList<>();
+        for(YoutubeVideo yv : listUpload) {
+            lisId.add(yv.getVideoId());
+        }
+        return new HashSet<>(lisId);
     }
 }

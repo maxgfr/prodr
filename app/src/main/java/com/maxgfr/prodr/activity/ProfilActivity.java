@@ -8,18 +8,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.GoogleAuthException;
 import com.maxgfr.prodr.R;
 import com.maxgfr.prodr.model.DataApi;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
 import androidx.appcompat.app.AppCompatActivity;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfilActivity extends AppCompatActivity {
 
-    private TextView mOutputText;
+    private TextView mail;
+    private TextView firstname;
+    private TextView lastname;
+    private TextView description;
+    private CircleImageView uri_profile;
     private Button mCallApiButton;
     private DataApi myApi;
 
@@ -34,7 +41,24 @@ public class ProfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
         mCallApiButton = (Button) findViewById(R.id.button);
-        mOutputText = (TextView) findViewById(R.id.textview);
+        mail = (TextView) findViewById(R.id.mail);
+        firstname = (TextView) findViewById(R.id.firstname);
+        lastname = (TextView) findViewById(R.id.lastname);
+        description = (TextView) findViewById(R.id.description);
+        uri_profile = (CircleImageView) findViewById(R.id.uri_profile);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        String email_pref = pref.getString("email", "");
+        String firstname_pref = pref.getString("firstname", "");
+        String description_pref = pref.getString("description", "");
+        String lastname_pref = pref.getString("lastname", "");
+        String thumbnailUrl_pref = pref.getString("thumbnailUrl", "https://i.stack.imgur.com/l60Hf.png");
+        mail.setText(email_pref);
+        firstname.setText(firstname_pref);
+        lastname.setText(lastname_pref);
+        description.setText(description_pref);
+        Picasso.get().load(thumbnailUrl_pref)
+                .placeholder(R.drawable.man).error(R.drawable.man)
+                .into(uri_profile);
         try {
             myApi = new DataApi(this);
         } catch (IOException e) {
@@ -46,7 +70,6 @@ public class ProfilActivity extends AppCompatActivity {
 
     public void onSynchronize(View view) throws IOException, GoogleAuthException {
         mCallApiButton.setEnabled(false);
-        mOutputText.setText("");
         myApi.getResultsFromApi();
         mCallApiButton.setEnabled(true);
     }
@@ -69,7 +92,7 @@ public class ProfilActivity extends AppCompatActivity {
             switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
-                    mOutputText.setText("This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.");
+                    Toast.makeText(getApplicationContext(), "This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.", Toast.LENGTH_SHORT).show();
                 } else {
                     myApi.getResultsFromApi();
                 }
@@ -94,9 +117,7 @@ public class ProfilActivity extends AppCompatActivity {
                 }
                 break;
         }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GoogleAuthException e) {
+        } catch (IOException | GoogleAuthException e) {
             e.printStackTrace();
         }
     }
