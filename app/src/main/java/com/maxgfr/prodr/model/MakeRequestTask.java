@@ -1,10 +1,14 @@
 package com.maxgfr.prodr.model;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 
+import com.google.android.gms.auth.GoogleAuthException;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -14,7 +18,9 @@ import com.google.api.services.youtube.model.Channel;
 import com.google.api.services.youtube.model.ChannelListResponse;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemListResponse;
+import com.maxgfr.prodr.activity.ProfilActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,13 +28,15 @@ import java.util.List;
 
 public class MakeRequestTask extends AsyncTask<Void, Void, YoutubeUser> {
 
+    private static final Intent REQUEST_AUTHORIZATION = null;
     private com.google.api.services.youtube.YouTube mService = null;
     private GoogleAccountCredential credential;
     private ProgressDialog mProgress;
     private YoutubeUser youtubeUser;
     private RequestInfo ri;
+    private Activity activity;
 
-    MakeRequestTask(GoogleAccountCredential credential, ProgressDialog pd) {
+    MakeRequestTask(GoogleAccountCredential credential, ProgressDialog pd, Activity activity) throws IOException, GoogleAuthException {
         this.credential =credential;
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -40,6 +48,7 @@ public class MakeRequestTask extends AsyncTask<Void, Void, YoutubeUser> {
         this.mProgress = pd;
         this.youtubeUser = new YoutubeUser();
         this.youtubeUser.setAccountMail(this.credential.getSelectedAccountName());
+        this.activity = activity;
     }
 
     @Override
@@ -104,7 +113,13 @@ public class MakeRequestTask extends AsyncTask<Void, Void, YoutubeUser> {
                 processInfo(playlistItemList.iterator());
             }
 
-        } catch (GoogleJsonResponseException e) {
+        } catch (UserRecoverableAuthIOException e) {
+            System.out.println("UserRecoverableAuthIOException");
+            this.activity.startActivityForResult(
+                    ((UserRecoverableAuthIOException) e).getIntent(),
+                    ProfilActivity.REQUEST_AUTHORIZATION);
+        }
+        catch (GoogleJsonResponseException e) {
             e.printStackTrace();
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
 

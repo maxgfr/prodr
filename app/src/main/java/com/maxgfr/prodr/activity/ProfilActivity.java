@@ -1,8 +1,5 @@
 package com.maxgfr.prodr.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import com.maxgfr.prodr.model.DataApi;
-
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.GoogleAuthException;
 import com.maxgfr.prodr.R;
+import com.maxgfr.prodr.model.DataApi;
+
+import java.io.IOException;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfilActivity extends AppCompatActivity {
 
@@ -20,11 +23,11 @@ public class ProfilActivity extends AppCompatActivity {
     private Button mCallApiButton;
     private DataApi myApi;
 
-    private static final int REQUEST_ACCOUNT_PICKER = 1000;
-    private static final int REQUEST_AUTHORIZATION = 1001;
-    private static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+    public static final int REQUEST_ACCOUNT_PICKER = 1000;
+    public static final int REQUEST_AUTHORIZATION = 1001;
+    public static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+    public static final String PREF_ACCOUNT_NAME = "accountName";
 
-    private static final String PREF_ACCOUNT_NAME = "accountName";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +35,22 @@ public class ProfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profil);
         mCallApiButton = (Button) findViewById(R.id.button);
         mOutputText = (TextView) findViewById(R.id.textview);
-        myApi = new DataApi(this);
+        try {
+            myApi = new DataApi(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (GoogleAuthException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void onSynchronize(View view) {
+    public void onSynchronize(View view) throws IOException, GoogleAuthException {
         mCallApiButton.setEnabled(false);
         mOutputText.setText("");
         myApi.getResultsFromApi();
         mCallApiButton.setEnabled(true);
     }
+
 
     /**
      * Called when an activity launched here (specifically, AccountPicker
@@ -53,9 +63,10 @@ public class ProfilActivity extends AppCompatActivity {
      *     activity result.
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
+        try {
+            switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
                     mOutputText.setText("This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.");
@@ -82,6 +93,11 @@ public class ProfilActivity extends AppCompatActivity {
                     myApi.getResultsFromApi();
                 }
                 break;
+        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (GoogleAuthException e) {
+            e.printStackTrace();
         }
     }
 }
