@@ -3,16 +3,22 @@ package com.maxgfr.prodr.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.maxgfr.prodr.R;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+import com.maxgfr.prodr.R;
+import com.maxgfr.prodr.model.AsyncGet;
+import com.maxgfr.prodr.model.FirebaseService;
+import com.maxgfr.prodr.model.Utils;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 public class SwipeActivity extends Activity {
 
@@ -25,6 +31,36 @@ public class SwipeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe);
+        FirebaseService firebaseService = FirebaseService.getInstance();
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        String id = pref.getString("id", "");
+        firebaseService.getData(id, "users", new AsyncGet() {
+            @Override
+            public void onSuccess(String id, Map<String, Object> object) {
+                System.out.println("On create SwipeActivity");
+                String firstname = object.get("firstname").toString();
+                String lastname = object.get("lastname").toString();
+                String description = object.get("description").toString();
+                String email = object.get("email").toString();
+                String thumbnailUrl = object.get("thumbnailUrl").toString();
+                Set set = Utils.videoToSet(object.get("listUpload"));
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putBoolean("inscription_done", true);
+                editor.putString("firstname", firstname);
+                editor.putString("lastname", lastname);
+                editor.putString("description", description);
+                editor.putString("email", email);
+                editor.putString("thumbnailUrl", thumbnailUrl);
+                editor.putStringSet("all_video_id", set);
+                editor.apply();
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            }
+        });
         flingContainer = findViewById(R.id.frame);
 
         al = new ArrayList<>();

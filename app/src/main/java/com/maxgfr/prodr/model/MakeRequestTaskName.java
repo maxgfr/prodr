@@ -31,7 +31,7 @@ public class MakeRequestTaskName extends AsyncTask<Void, Void, YoutubeUser> {
     private RequestInfo ri;
     private String possibleName;
 
-    MakeRequestTaskName(GoogleAccountCredential credential, ProgressDialog pd, String name) {
+    MakeRequestTaskName(GoogleAccountCredential credential, ProgressDialog pd, YoutubeUser youtubeUser) {
 
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -41,8 +41,8 @@ public class MakeRequestTaskName extends AsyncTask<Void, Void, YoutubeUser> {
                 .build();
         this.ri = RequestInfo.getInstance();
         this.mProgress = pd;
-        this.youtubeUser = new YoutubeUser();
-        this.possibleName = name;
+        this.youtubeUser = youtubeUser;
+        this.possibleName = youtubeUser.getPossibleUserName();
     }
 
 
@@ -146,6 +146,8 @@ public class MakeRequestTaskName extends AsyncTask<Void, Void, YoutubeUser> {
             ri.addInfo("Data retrieved using the YouTube Data API:");
         }
         System.out.println(output.toString());
+        // Save user database
+        output.saveData();
     }
 
     @Override

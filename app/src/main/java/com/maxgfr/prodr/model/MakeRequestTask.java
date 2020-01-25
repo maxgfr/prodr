@@ -62,19 +62,22 @@ public class MakeRequestTask extends AsyncTask<Void, Void, YoutubeUser> {
         try {
             channelResult = mService.channels().list("snippet,contentDetails,statistics")
                     .setMine(true)
-                    .setFields("items/contentDetails,nextPageToken,pageInfo")
                     .execute();
-
-            System.out.println(channelResult);
 
 
             List<Channel> channelsList = channelResult.getItems();
+
+            System.out.println(channelsList);
 
             if (channelsList != null) {
 
                 System.out.println(channelsList.get(0));
 
                 youtubeUser.addUpload(channelsList.get(0).getContentDetails().getRelatedPlaylists().getUploads());
+
+                youtubeUser.addThumbnail(channelsList.get(0).getSnippet().getThumbnails().getHigh().getUrl());
+
+                youtubeUser.setNbSubscriber(channelsList.get(0).getStatistics().getSubscriberCount().toString());
 
                 // The user's default channel is the first item in the list.
                 // Extract the playlist ID for the channel's videos from the
@@ -159,7 +162,7 @@ public class MakeRequestTask extends AsyncTask<Void, Void, YoutubeUser> {
         System.out.println(output.toString());
         if (output.getNbVideo() == 0) {
             System.out.println("Launch the second asynchronous task");
-            new MakeRequestTaskName(this.credential,this.mProgress, youtubeUser.getPossibleUserName()).execute();
+            new MakeRequestTaskName(this.credential,this.mProgress, youtubeUser).execute();
         }
     }
 
