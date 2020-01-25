@@ -1,7 +1,10 @@
 package com.maxgfr.prodr.model;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
+
+import com.maxgfr.prodr.activity.InfosActivity;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -129,6 +132,8 @@ public class YoutubeUser {
             @Override
             public void onSuccess(String msg) {
                 System.out.println("Data added");
+                Intent intent = new Intent(getApplicationContext(), InfosActivity.class);
+                getApplicationContext().startActivity(intent);
                 Toast.makeText(getApplicationContext(), "Data added to database", Toast.LENGTH_SHORT).show();
             }
 
