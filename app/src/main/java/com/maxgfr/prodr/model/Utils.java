@@ -47,8 +47,7 @@ public class Utils {
             JSONObject obj = null;
             try {
                 obj = new JSONObject(convertStandardJSONString(value.toString()));
-                //System.out.println(obj);
-                Profile p = new Profile(obj.getString("id"), obj.getString("name"), obj.getString("thumbnail"));
+                Profile p = new Profile(obj.getString("id"), obj.getString("name"), obj.getString("thumbnailId"));
                 list_profile.add(p);
             } catch (JSONException e) {
                 e.printStackTrace();

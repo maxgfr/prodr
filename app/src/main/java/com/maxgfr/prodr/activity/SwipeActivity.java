@@ -23,9 +23,7 @@ import java.util.Map;
 public class SwipeActivity extends Activity {
 
     private SwipeFlingAdapterView flingContainer;
-    private ArrayList<String> al;
     private ProfileAdapter profileAdapter;
-    private int i;
     private ArrayList<Profile> listAccept;
     private ArrayList<Profile> listRefuse;
     private ArrayList<Profile> allProfile;
@@ -50,6 +48,18 @@ public class SwipeActivity extends Activity {
             allProfile = new ArrayList<>();
         }
         flingContainer = findViewById(R.id.frame);
+        /*
+        System.out.println("LIST ACCEEEEEEPT");
+        System.out.println(listAccept);
+        System.out.println("LIST REFUUUUUUUSE");
+        System.out.println(listRefuse);
+         */
+        ArrayList<Profile> newList = new ArrayList<>(allProfile);
+        for(Profile p : newList) {
+            if(listRefuse.contains(p) || listAccept.contains(p)) {
+                allProfile.remove(p);
+            }
+        }
 
         profileAdapter = new ProfileAdapter(this, R.layout.view_layout, allProfile);
 
@@ -124,8 +134,6 @@ public class SwipeActivity extends Activity {
 
         });
 
-
-        // Optionally add an OnItemClickListener
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {

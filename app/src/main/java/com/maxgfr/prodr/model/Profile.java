@@ -12,9 +12,21 @@ public class Profile implements Parcelable {
     private String thumbnailId;
 
     public Profile(String id, String name, String thumbnailId) {
-        this.id = id;
-        this.name = name;
-        this.thumbnailId = thumbnailId;
+        if(id != null) {
+            this.id = id;
+        } else {
+            this.id = "";
+        }
+        if(name != null) {
+            this.name = name;
+        } else {
+            this.name = "";
+        }
+        if(thumbnailId != null) {
+            this.thumbnailId = thumbnailId;
+        } else {
+            this.thumbnailId = "";
+        }
     }
 
     public Profile(Object id, Object name, Object thumbnailId) {
