@@ -4,11 +4,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -104,4 +107,26 @@ public class FirebaseService {
                     }
                 });
     }
+
+    public void getCollection(String collectionName, final AsyncCollectionGet myInterface) {
+        CollectionReference collectionReference = db.collection(collectionName);
+        collectionReference.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        Map<String, Map<String, Object>> data = new HashMap<>();
+                        for(DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                            data.put(doc.getId(), doc.getData());
+                        }
+                        myInterface.onSuccess(data);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        myInterface.onFailure("Error");
+                    }
+                });
+    }
+
 }

@@ -10,10 +10,13 @@ import android.widget.Toast;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.maxgfr.prodr.R;
+import com.maxgfr.prodr.model.AsyncCollectionGet;
 import com.maxgfr.prodr.model.AsyncGet;
 import com.maxgfr.prodr.model.FirebaseService;
+import com.maxgfr.prodr.model.Profile;
 import com.maxgfr.prodr.model.Utils;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,28 +40,64 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else {
-            firebaseService.getData(id,"users", new AsyncGet() {
-                @Override
-                public void onSuccess(String id, Map<String, Object> object) {
+            firebaseService.getCollection("users", new AsyncCollectionGet() {
+                public void onSuccess(Map<String, Map<String, Object>> res) {
                     try {
-                        System.out.println("DataLoaded");
-                        String firstname = object.get("firstname").toString();
-                        String lastname = object.get("lastname").toString();
-                        String description = object.get("description").toString();
-                        String email = object.get("email").toString();
-                        String thumbnailUrl = object.get("thumbnailUrl").toString();
-                        Set set = Utils.videoToSet(object.get("listUpload"));
-                        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("firstname", firstname);
-                        editor.putString("lastname", lastname);
-                        editor.putString("description", description);
-                        editor.putString("email", email);
-                        editor.putString("thumbnailUrl", thumbnailUrl);
-                        editor.putStringSet("all_video_id", set);
-                        editor.apply();
-                        Intent i = new Intent(ctx, SwipeActivity.class);
-                        ctx.startActivity(i);
+                        System.out.println("CollectionLoaded");
+                        ArrayList<Profile> allListProfile = new ArrayList<>();
+
+                        for (Map.Entry<String, Map<String, Object>> entry : res.entrySet()) {
+                            Map<String, Object> object = entry.getValue();
+                            Profile profile = new Profile(
+                                    object.get("id"),
+                                    object.get("firstname"),
+                                    object.get("thumbnailUrl")
+                                );
+                            allListProfile.add(profile);
+                        }
+                        //System.out.println(allListProfile);
+                        firebaseService.getData(id,"users", new AsyncGet() {
+                            @Override
+                            public void onSuccess(String id, Map<String, Object> object) {
+                                try {
+                                    System.out.println("DataLoaded");
+                                    String firstname = object.get("firstname").toString();
+                                    String lastname = object.get("lastname").toString();
+                                    String description = object.get("description").toString();
+                                    String email = object.get("email").toString();
+                                    String thumbnailUrl = object.get("thumbnailUrl").toString();
+                                    Set set = Utils.videoToSet(object.get("listUpload"));
+                                    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+                                    SharedPreferences.Editor editor = pref.edit();
+                                    editor.putString("firstname", firstname);
+                                    editor.putString("lastname", lastname);
+                                    editor.putString("description", description);
+                                    editor.putString("email", email);
+                                    editor.putString("thumbnailUrl", thumbnailUrl);
+                                    if(object.get("listAccept") != null) {
+                                        editor.putString("listAccept", object.get("listAccept").toString());
+                                    }
+                                    if(object.get("listRefuse") != null) {
+                                        editor.putString("listRefuse", object.get("listRefuse").toString());
+                                    }
+                                    editor.putStringSet("all_video_id", set);
+                                    editor.apply();
+                                    ArrayList<Profile> listAccept = Utils.profileListToParcelable(object.get("listAccept"));
+                                    ArrayList<Profile> listRefuse = Utils.profileListToParcelable(object.get("listRefuse"));
+                                    Intent i = new Intent(ctx, SwipeActivity.class);
+                                    i.putParcelableArrayListExtra("ACCEPT_LIST", listAccept);
+                                    i.putParcelableArrayListExtra("REFUSE_LIST", listRefuse);
+                                    ctx.startActivity(i);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(String msg) {
+                                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

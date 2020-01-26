@@ -35,4 +35,26 @@ public class Utils {
         data_json = data_json.replace("}", "\"}");
         return data_json;
     }
+
+    public static ArrayList<Profile> profileListToParcelable(Object o) {
+        if(o == null) {
+            return new ArrayList<>();
+        }
+        List<Object> group = (List<Object>) o;
+        ArrayList<Profile> list_profile = new ArrayList<>();
+        for (int i = 0; i < group.size(); i++) {
+            Object value = group.get(i);
+            JSONObject obj = null;
+            try {
+                obj = new JSONObject(convertStandardJSONString(value.toString()));
+                //System.out.println(obj);
+                Profile p = new Profile(obj.getString("id"), obj.getString("name"), obj.getString("thumbnail"));
+                list_profile.add(p);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return list_profile;
+    }
+
 }

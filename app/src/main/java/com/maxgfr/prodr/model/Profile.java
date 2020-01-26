@@ -3,6 +3,8 @@ package com.maxgfr.prodr.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 public class Profile implements Parcelable {
 
     private String id;
@@ -15,6 +17,24 @@ public class Profile implements Parcelable {
         this.thumbnailId = thumbnailId;
     }
 
+    public Profile(Object id, Object name, Object thumbnailId) {
+        if(id != null) {
+            this.id = id.toString();
+        } else {
+            this.id = "";
+        }
+        if(name != null) {
+            this.name = name.toString();
+        } else {
+            this.name = "";
+        }
+        if(thumbnailId != null) {
+            this.thumbnailId = thumbnailId.toString();
+        } else {
+            this.thumbnailId = "";
+        }
+    }
+
     public String getName() {
         return this.name;
     }
@@ -25,6 +45,15 @@ public class Profile implements Parcelable {
 
     public String getId() {
         return this.id;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        String res = "Id : " + this.id + "\n" +
+                    "Name : " + this.name + "\n" +
+                    "Thumbnail url : " + this.thumbnailId + "\n\n";
+        return res;
     }
 
     @Override

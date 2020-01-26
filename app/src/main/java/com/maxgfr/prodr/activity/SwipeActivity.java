@@ -12,13 +12,13 @@ import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.maxgfr.prodr.R;
-import com.maxgfr.prodr.model.AsyncGet;
+import com.maxgfr.prodr.model.AsyncModify;
 import com.maxgfr.prodr.model.FirebaseService;
-import com.maxgfr.prodr.model.Utils;
+import com.maxgfr.prodr.model.Profile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class SwipeActivity extends Activity {
 
@@ -26,6 +26,9 @@ public class SwipeActivity extends Activity {
     private ArrayList<String> al;
     private ArrayAdapter<String> arrayAdapter;
     private int i;
+    private ArrayList<Profile> listAccept;
+    private ArrayList<Profile> listRefuse;
+    private ArrayList<Profile> allProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,36 +37,9 @@ public class SwipeActivity extends Activity {
         FirebaseService firebaseService = FirebaseService.getInstance();
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         String id = pref.getString("id", "");
-        firebaseService.getData(id, "users", new AsyncGet() {
-            @Override
-            public void onSuccess(String id, Map<String, Object> object) {
-                try {
-                    String firstname = object.get("firstname").toString();
-                    String lastname = object.get("lastname").toString();
-                    String description = object.get("description").toString();
-                    String email = object.get("email").toString();
-                    String thumbnailUrl = object.get("thumbnailUrl").toString();
-                    Set set = Utils.videoToSet(object.get("listUpload"));
-                    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("firstname", firstname);
-                    editor.putString("lastname", lastname);
-                    editor.putString("description", description);
-                    editor.putString("email", email);
-                    editor.putString("thumbnailUrl", thumbnailUrl);
-                    editor.putStringSet("all_video_id", set);
-                    editor.apply();
-                    Toast.makeText(getApplicationContext(), "Data loaded", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(String msg) {
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-            }
-        });
+        listAccept = getIntent().getParcelableArrayListExtra("ACCEPT_LIST");
+        listRefuse = getIntent().getParcelableArrayListExtra("REFUSE_LIST");
+        allProfile = getIntent().getParcelableArrayListExtra("ALL_PROFILE");
         flingContainer = findViewById(R.id.frame);
 
         al = new ArrayList<>();
@@ -91,15 +67,31 @@ public class SwipeActivity extends Activity {
 
             @Override
             public void onLeftCardExit(Object dataObject) {
-                //Do something on the left!
-                //You also have access to the original object.
-                //If you want to use it just cast it (String) dataObject
-                makeToast(SwipeActivity.this, "Left!");
+                makeToast(SwipeActivity.this, "Rejected");
+                System.out.println(dataObject);
+                String id = pref.getString("id", "");
+                listRefuse.add((Profile) dataObject);
+                allProfile.remove(dataObject);
+                Map<String, Object> data = new HashMap<>();
+                data.put("listRefuse", listRefuse);
+                final FirebaseService firebaseService = FirebaseService.getInstance();
+                firebaseService.modifyData(id, "users", data, new AsyncModify() {
+                    @Override
+                    public void onSuccess(String msg) {
+                        System.out.println("Data added");
+                        Toast.makeText(getApplicationContext(), "Data added to database", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        System.out.println(msg);
+                    }
+                });
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                makeToast(SwipeActivity.this, "Right!");
+                makeToast(SwipeActivity.this, "Accepted");
             }
 
             @Override
