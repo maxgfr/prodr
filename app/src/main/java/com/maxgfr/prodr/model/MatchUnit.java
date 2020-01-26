@@ -4,10 +4,12 @@ package com.maxgfr.prodr.model;
 public class MatchUnit {
     private String match_name ;
     private String match_image ;
+    private String id;
 
-    public MatchUnit(String i, String j) {
+    public MatchUnit(String i, String j, String id) {
         match_name = i;
         match_image = j;
+        this.id = id;
     }
 
     public String getMatchName() {
@@ -20,6 +22,10 @@ public class MatchUnit {
 
     public String getMatchImage() {
         return match_image;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void setMatchImage(String matchImg) {

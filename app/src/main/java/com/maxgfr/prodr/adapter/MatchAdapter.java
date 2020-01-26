@@ -1,15 +1,23 @@
 package com.maxgfr.prodr.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.maxgfr.prodr.R;
+import com.maxgfr.prodr.activity.OtherProfileActivity;
+import com.maxgfr.prodr.model.AsyncGet;
+import com.maxgfr.prodr.model.FirebaseService;
 import com.maxgfr.prodr.model.MatchUnit;
+import com.maxgfr.prodr.model.Utils;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,7 +58,43 @@ public class MatchAdapter extends RecyclerView.Adapter<MyViewHolder>{
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseService firebaseService1 = FirebaseService.getInstance();
+                firebaseService1.getData(mDataset.get(position).getId(),"users", new AsyncGet() {
+                    @Override
+                    public void onSuccess(String id, Map<String, Object> object) {
+                        try {
+                            String firstname = object.get("firstname").toString();
+                            String lastname = object.get("lastname").toString();
+                            String description = object.get("description").toString();
+                            String email = object.get("email").toString();
+                            String thumbnailUrl = null;
+                            try {
+                                thumbnailUrl = object.get("thumbnailUrl").toString();
+                            } catch(Exception e) {
+                                thumbnailUrl = "";
+                            }
+                            Set<String> set = Utils.videoToSet(object.get("listUpload"));
+                            ArrayList<String> uploadList = new ArrayList<>();
+                            uploadList.addAll(set);
+                            Intent i = new Intent(mContext, OtherProfileActivity.class);
+                            i.putExtra("EMAIL", email);
+                            i.putExtra("FIRSTNAME", firstname);
+                            i.putExtra("DESCRIPTION", description);
+                            i.putExtra("LASTNAME", lastname);
+                            i.putExtra("THUMBNAIL_URL", thumbnailUrl);
+                            i.putExtra("SEE_ELEMENT", true);
+                            i.putStringArrayListExtra("UPLOAD_LIST", uploadList);
+                            mContext.startActivity(i);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(String msg) {
+                        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -60,5 +104,14 @@ public class MatchAdapter extends RecyclerView.Adapter<MyViewHolder>{
     public int getItemCount() {
         return mDataset.size();
     }
+
+
+
+
+
+
+
+
+
 
 }

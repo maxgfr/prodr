@@ -59,7 +59,7 @@ public class Utils {
     public static ArrayList<MatchUnit> listProfileToListMatch(ArrayList<Profile> listAccept) {
         ArrayList<MatchUnit> matchUnits = new ArrayList<>();
         for(Profile p : listAccept) {
-            MatchUnit m = new MatchUnit(p.getName(), p.getThumbnailId());
+            MatchUnit m = new MatchUnit(p.getName(), p.getThumbnailId(), p.getId());
             matchUnits.add(m);
         }
         return matchUnits;

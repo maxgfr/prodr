@@ -80,9 +80,11 @@ public class ProfileActivity extends AppCompatActivity {
         firstname.setText(firstname_pref);
         lastname.setText(lastname_pref);
         description.setText(description_pref);
-        Picasso.get().load(thumbnailUrl_pref)
-                .placeholder(R.drawable.man).error(R.drawable.man)
-                .into(uri_profile);
+        if(thumbnailUrl_pref != "") {
+            Picasso.get().load(thumbnailUrl_pref)
+                    .placeholder(R.drawable.man).error(R.drawable.man)
+                    .into(uri_profile);
+        }
         try {
             myApi = new DataApi(this);
         } catch (IOException e) {

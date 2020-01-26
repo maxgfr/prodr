@@ -37,8 +37,5 @@ public class MatchActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
     }
 
-
-
-
 }
 

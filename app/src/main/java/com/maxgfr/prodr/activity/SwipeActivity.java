@@ -12,13 +12,16 @@ import android.widget.Toast;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.maxgfr.prodr.R;
 import com.maxgfr.prodr.adapter.ProfileAdapter;
+import com.maxgfr.prodr.model.AsyncGet;
 import com.maxgfr.prodr.model.AsyncModify;
 import com.maxgfr.prodr.model.FirebaseService;
 import com.maxgfr.prodr.model.Profile;
+import com.maxgfr.prodr.model.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class SwipeActivity extends Activity {
 
@@ -134,10 +137,51 @@ public class SwipeActivity extends Activity {
 
         });
 
+        Context ctx = this;
+
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
                 makeToast(SwipeActivity.this, "Clicked!");
+                FirebaseService firebaseService1 = FirebaseService.getInstance();
+                Profile obj =  (Profile) dataObject;
+                firebaseService1.getData(obj.getId(),"users", new AsyncGet() {
+                    @Override
+                    public void onSuccess(String id, Map<String, Object> object) {
+                        try {
+                            String firstname = object.get("firstname").toString();
+                            String lastname = object.get("lastname").toString();
+                            String description = object.get("description").toString();
+                            String email = object.get("email").toString();
+                            String thumbnailUrl = null;
+                            try {
+                                thumbnailUrl = object.get("thumbnailUrl").toString();
+                            } catch(Exception e) {
+                                thumbnailUrl = "";
+                            }
+                            Set<String> set = Utils.videoToSet(object.get("listUpload"));
+                            ArrayList<String> uploadList = new ArrayList<>();
+                            uploadList.addAll(set);
+                            Intent i = new Intent(ctx, OtherProfileActivity.class);
+                            i.putExtra("EMAIL", email);
+                            i.putExtra("FIRSTNAME", firstname);
+                            i.putExtra("DESCRIPTION", description);
+                            i.putExtra("LASTNAME", lastname);
+                            i.putExtra("THUMBNAIL_URL", thumbnailUrl);
+                            i.putExtra("SEE_ELEMENT", false);
+                            i.putStringArrayListExtra("UPLOAD_LIST", uploadList);
+                            ctx.startActivity(i);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 
