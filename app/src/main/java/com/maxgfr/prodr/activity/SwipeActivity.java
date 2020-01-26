@@ -7,11 +7,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.maxgfr.prodr.R;
+import com.maxgfr.prodr.adapter.ProfileAdapter;
 import com.maxgfr.prodr.model.AsyncModify;
 import com.maxgfr.prodr.model.FirebaseService;
 import com.maxgfr.prodr.model.Profile;
@@ -24,7 +24,7 @@ public class SwipeActivity extends Activity {
 
     private SwipeFlingAdapterView flingContainer;
     private ArrayList<String> al;
-    private ArrayAdapter<String> arrayAdapter;
+    private ProfileAdapter profileAdapter;
     private int i;
     private ArrayList<Profile> listAccept;
     private ArrayList<Profile> listRefuse;
@@ -38,31 +38,29 @@ public class SwipeActivity extends Activity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         String id = pref.getString("id", "");
         listAccept = getIntent().getParcelableArrayListExtra("ACCEPT_LIST");
+        if(listAccept == null) {
+            listAccept = new ArrayList<>();
+        }
         listRefuse = getIntent().getParcelableArrayListExtra("REFUSE_LIST");
+        if(listRefuse == null) {
+            listRefuse = new ArrayList<>();
+        }
         allProfile = getIntent().getParcelableArrayListExtra("ALL_PROFILE");
+        if(allProfile == null) {
+            allProfile = new ArrayList<>();
+        }
         flingContainer = findViewById(R.id.frame);
 
-        al = new ArrayList<>();
-        al.add("php");
-        al.add("c");
-        al.add("python");
-        al.add("java");
-        al.add("html");
-        al.add("c++");
-        al.add("css");
-        al.add("javascript");
-
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al );
+        profileAdapter = new ProfileAdapter(this, R.layout.view_layout, allProfile);
 
 
-        flingContainer.setAdapter(arrayAdapter);
+        flingContainer.setAdapter(profileAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
-                al.remove(0);
-                arrayAdapter.notifyDataSetChanged();
+                profileAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -72,6 +70,7 @@ public class SwipeActivity extends Activity {
                 String id = pref.getString("id", "");
                 listRefuse.add((Profile) dataObject);
                 allProfile.remove(dataObject);
+                //profileAdapter.removeTop();
                 Map<String, Object> data = new HashMap<>();
                 data.put("listRefuse", listRefuse);
                 final FirebaseService firebaseService = FirebaseService.getInstance();
@@ -101,11 +100,10 @@ public class SwipeActivity extends Activity {
             }
 
             @Override
-            public void onScroll(float scrollProgressPercent) {
-                View view = flingContainer.getSelectedView();
-                view.findViewById(R.id.item_swipe_right_indicator).setAlpha(scrollProgressPercent < 0 ? -scrollProgressPercent : 0);
-                view.findViewById(R.id.item_swipe_left_indicator).setAlpha(scrollProgressPercent > 0 ? scrollProgressPercent : 0);
+            public void onScroll(float v) {
+
             }
+
         });
 
 

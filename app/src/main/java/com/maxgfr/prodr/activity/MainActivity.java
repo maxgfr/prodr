@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                                     Intent i = new Intent(ctx, SwipeActivity.class);
                                     i.putParcelableArrayListExtra("ACCEPT_LIST", listAccept);
                                     i.putParcelableArrayListExtra("REFUSE_LIST", listRefuse);
+                                    i.putParcelableArrayListExtra("ALL_PROFILE", allListProfile);
                                     ctx.startActivity(i);
                                 } catch (Exception e) {
                                     e.printStackTrace();
