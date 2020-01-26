@@ -8,8 +8,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.NETWORK"/>
-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.NETWORK" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
         android:allowBackup="true"
@@ -18,15 +18,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MatchActivity"></activity>
+        <activity android:name=".activity.OtherProfileActivity"></activity>
+        <activity android:name=".activity.MatchActivity" />
         <activity android:name=".adapter.MatchAdapter" />
         <activity android:name=".activity.SwipeActivity" />
-        <activity android:name=".activity.ProfilActivity" >
+        <activity android:name=".activity.ProfileActivity">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="com.maxgfr.prodr.profile"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="com.maxgfr.prodr.profile" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity" />

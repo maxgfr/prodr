@@ -156,7 +156,7 @@ public class SwipeActivity extends Activity {
     }
 
     public void onProfile(View view) {
-        Intent intent = new Intent(this, ProfilActivity.class);
+        Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
 

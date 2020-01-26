@@ -1,7 +1,5 @@
 package com.maxgfr.prodr.activity;
 
-import android.accounts.AccountManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -12,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.GoogleAuthException;
 import com.maxgfr.prodr.R;
@@ -27,7 +24,7 @@ import java.util.Set;
 import androidx.appcompat.app.AppCompatActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfilActivity extends AppCompatActivity {
+public class OtherProfileActivity extends AppCompatActivity {
 
     private TextView mail;
     private TextView firstname;
@@ -46,7 +43,7 @@ public class ProfilActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profil);
+        setContentView(R.layout.activity_profile);
         mCallApiButton = (Button) findViewById(R.id.button);
         mail = (TextView) findViewById(R.id.mail);
         firstname = (TextView) findViewById(R.id.firstname);
@@ -92,57 +89,4 @@ public class ProfilActivity extends AppCompatActivity {
         }
     }
 
-    public void onSynchronize(View view) throws IOException, GoogleAuthException {
-        mCallApiButton.setEnabled(false);
-        myApi.getResultsFromApi();
-        mCallApiButton.setEnabled(true);
-    }
-
-
-    /**
-     * Called when an activity launched here (specifically, AccountPicker
-     * and authorization) exits, giving you the requestCode you started it with,
-     * the resultCode it returned, and any additional data from it.
-     * @param requestCode code indicating which activity result is incoming.
-     * @param resultCode code indicating the result of the incoming
-     *     activity result.
-     * @param data Intent (containing result data) returned by incoming
-     *     activity result.
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        try {
-            switch(requestCode) {
-            case REQUEST_GOOGLE_PLAY_SERVICES:
-                if (resultCode != RESULT_OK) {
-                    Toast.makeText(getApplicationContext(), "This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.", Toast.LENGTH_SHORT).show();
-                } else {
-                    myApi.getResultsFromApi();
-                }
-                break;
-            case REQUEST_ACCOUNT_PICKER:
-                if (resultCode == RESULT_OK && data != null && data.getExtras() != null) {
-                    String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-                    System.out.println("account name "+accountName);
-                    if (accountName != null) {
-                        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putString(PREF_ACCOUNT_NAME, accountName);
-                        editor.apply();
-                        myApi.setNameAccount(accountName);
-                        myApi.getResultsFromApi();
-                    }
-                }
-                break;
-            case REQUEST_AUTHORIZATION:
-                if (resultCode == RESULT_OK) {
-                    myApi.getResultsFromApi();
-                }
-                break;
-        }
-        } catch (IOException | GoogleAuthException e) {
-            e.printStackTrace();
-        }
-    }
 }

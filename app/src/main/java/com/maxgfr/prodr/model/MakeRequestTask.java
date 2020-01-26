@@ -18,7 +18,7 @@ import com.google.api.services.youtube.model.Channel;
 import com.google.api.services.youtube.model.ChannelListResponse;
 import com.google.api.services.youtube.model.PlaylistItem;
 import com.google.api.services.youtube.model.PlaylistItemListResponse;
-import com.maxgfr.prodr.activity.ProfilActivity;
+import com.maxgfr.prodr.activity.ProfileActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -120,7 +120,7 @@ public class MakeRequestTask extends AsyncTask<Void, Void, YoutubeUser> {
             System.out.println("UserRecoverableAuthIOException");
             this.activity.startActivityForResult(
                     ((UserRecoverableAuthIOException) e).getIntent(),
-                    ProfilActivity.REQUEST_AUTHORIZATION);
+                    ProfileActivity.REQUEST_AUTHORIZATION);
         }
         catch (GoogleJsonResponseException e) {
             e.printStackTrace();
