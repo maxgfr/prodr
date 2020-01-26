@@ -132,9 +132,9 @@ public class YoutubeUser {
             @Override
             public void onSuccess(String msg) {
                 System.out.println("Data added");
+                Toast.makeText(getApplicationContext(), "Data added to database", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), InfosActivity.class);
                 getApplicationContext().startActivity(intent);
-                Toast.makeText(getApplicationContext(), "Data added to database", Toast.LENGTH_SHORT).show();
             }
 
             @Override
