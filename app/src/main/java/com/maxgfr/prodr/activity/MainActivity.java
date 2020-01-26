@@ -65,7 +65,12 @@ public class MainActivity extends AppCompatActivity {
                                     String lastname = object.get("lastname").toString();
                                     String description = object.get("description").toString();
                                     String email = object.get("email").toString();
-                                    String thumbnailUrl = object.get("thumbnailUrl").toString();
+                                    String thumbnailUrl = "";
+                                    try {
+                                        thumbnailUrl = object.get("thumbnailUrl").toString();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                     Set set = Utils.videoToSet(object.get("listUpload"));
                                     SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
                                     SharedPreferences.Editor editor = pref.edit();

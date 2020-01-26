@@ -12,6 +12,9 @@ public class Utils {
 
     public static Set<String> videoToSet(Object o) {
         List<Object> group = (List<Object>) o;
+        if(o == null) {
+            return new HashSet<>();
+        }
         ArrayList<String> list_url = new ArrayList<>();
         for (int i = 0; i < group.size(); i++) {
             Object value = group.get(i);

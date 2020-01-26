@@ -1,10 +1,5 @@
 package com.maxgfr.prodr.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.maxgfr.prodr.model.AsyncModify;
-import com.maxgfr.prodr.model.FirebaseService;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,9 +11,13 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.maxgfr.prodr.R;
+import com.maxgfr.prodr.model.AsyncModify;
+import com.maxgfr.prodr.model.FirebaseService;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class InfosActivity extends AppCompatActivity {
 
@@ -83,7 +82,7 @@ public class InfosActivity extends AppCompatActivity {
                 System.out.println("Data added");
                 editor.putBoolean("inscription_done", true);
                 editor.apply();
-                Intent intent = new Intent(getApplicationContext(), SwipeActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
