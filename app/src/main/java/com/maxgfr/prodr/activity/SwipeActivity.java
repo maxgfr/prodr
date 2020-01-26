@@ -70,7 +70,6 @@ public class SwipeActivity extends Activity {
                 String id = pref.getString("id", "");
                 listRefuse.add((Profile) dataObject);
                 allProfile.remove(dataObject);
-                //profileAdapter.removeTop();
                 Map<String, Object> data = new HashMap<>();
                 data.put("listRefuse", listRefuse);
                 final FirebaseService firebaseService = FirebaseService.getInstance();
@@ -91,6 +90,25 @@ public class SwipeActivity extends Activity {
             @Override
             public void onRightCardExit(Object dataObject) {
                 makeToast(SwipeActivity.this, "Accepted");
+                System.out.println(dataObject);
+                String id = pref.getString("id", "");
+                listAccept.add((Profile) dataObject);
+                allProfile.remove(dataObject);
+                Map<String, Object> data = new HashMap<>();
+                data.put("listAccept", listAccept);
+                final FirebaseService firebaseService = FirebaseService.getInstance();
+                firebaseService.modifyData(id, "users", data, new AsyncModify() {
+                    @Override
+                    public void onSuccess(String msg) {
+                        System.out.println("Data added");
+                        Toast.makeText(getApplicationContext(), "Data added to database", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        System.out.println(msg);
+                    }
+                });
             }
 
             @Override
