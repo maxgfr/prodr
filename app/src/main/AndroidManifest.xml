@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MatchActivity" />
+        <activity android:name=".activity.MatchActivity"></activity>
+        <activity android:name=".activity.MatchAdapter" />
         <activity android:name=".activity.SwipeActivity" />
         <activity android:name=".activity.ProfilActivity" >
             <intent-filter>
