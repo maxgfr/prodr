@@ -161,7 +161,8 @@ public class SwipeActivity extends Activity {
     }
 
     public void onMatch(View view) {
-        Intent intent = new Intent(this, MatchActivity.class);
-        startActivity(intent);
+        Intent i = new Intent(this, MatchActivity.class);
+        i.putParcelableArrayListExtra("ACCEPT_LIST", listAccept);
+        startActivity(i);
     }
 }

@@ -56,4 +56,12 @@ public class Utils {
         return list_profile;
     }
 
+    public static ArrayList<MatchUnit> listProfileToListMatch(ArrayList<Profile> listAccept) {
+        ArrayList<MatchUnit> matchUnits = new ArrayList<>();
+        for(Profile p : listAccept) {
+            MatchUnit m = new MatchUnit(p.getName(), p.getThumbnailId());
+            matchUnits.add(m);
+        }
+        return matchUnits;
+    }
 }
