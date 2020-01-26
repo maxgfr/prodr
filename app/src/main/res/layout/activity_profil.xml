@@ -119,14 +119,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:layout_marginBottom="256dp"
                 android:background="#c4302b"
                 android:onClick="onSynchronize"
                 android:text="Synchronize with Youtube"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <ListView
+                android:id="@+id/lview"
+                android:layout_width="374dp"
+                android:layout_height="244dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:layout_editor_absoluteY="167dp"></ListView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

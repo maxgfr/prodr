@@ -4,9 +4,13 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +20,9 @@ import com.maxgfr.prodr.model.DataApi;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import androidx.appcompat.app.AppCompatActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -52,6 +59,23 @@ public class ProfilActivity extends AppCompatActivity {
         String description_pref = pref.getString("description", "");
         String lastname_pref = pref.getString("lastname", "");
         String thumbnailUrl_pref = pref.getString("thumbnailUrl", "https://i.stack.imgur.com/l60Hf.png");
+
+        Set<String> listVideo = pref.getStringSet("all_video_id", null);
+        List<String> arrayListVideo = new ArrayList<String>();
+        arrayListVideo.addAll(listVideo);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrayListVideo);
+        ListView listView = (ListView) findViewById(R.id.lview);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                String id = arrayListVideo.get(position);
+                Uri uri = Uri.parse("https://www.youtube.com/watch?v="+id); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
         mail.setText(email_pref);
         firstname.setText(firstname_pref);
         lastname.setText(lastname_pref);
